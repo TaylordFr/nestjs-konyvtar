@@ -39,8 +39,9 @@ export class BooksService {
       id: this.nextId,
       reserved: false,
     });
-
+    this.books.push(newBook)
     this.nextId++;
+    return newBook;
   }
 
   findAll() {
@@ -52,16 +53,28 @@ export class BooksService {
   }
 
   update(id: number, updateBookDto: UpdateBookDto) {
-    return `This action updates a #${id} book`;
+    const index = this.books.findIndex(book => book.id == id)
+    
+    if(index == -1){
+      return undefined;
+    }
+    
+    const newBook = {
+      ...this.books[index],
+      ...updateBookDto,
+    }
+
+    this.books[index] = newBook
   }
 
   remove(id: number) {
     const index = this.books.findIndex(book => book.id == id)
 
     if(index == -1){
-      //TODO: Report non-existent book
+      return false;
     }
 
     this.books.splice(index, 1);
+    return true;
   }
 }

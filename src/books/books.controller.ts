@@ -27,7 +27,9 @@ export class BooksController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateBookDto: UpdateBookDto) {
-    return this.booksService.update(+id, updateBookDto);
+    if(!this.booksService.update(+id)){
+      throw new NotFoundException('No book with this id')
+    }
   }
 
   @Delete(':id')
